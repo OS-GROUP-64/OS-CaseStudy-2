@@ -30,7 +30,7 @@ namespace OS_Problem_02
             return x;
         }
 
-        static void th01()
+        static void th01(object t)
         {
             int i;
             for (i = 1; i < 51; i++)
@@ -39,11 +39,11 @@ namespace OS_Problem_02
                 {
                     if (Count >= 10) // more than or equal to 10
                     {
-                        Console.WriteLine("\n-- EnQueue Waiting thread:{0} --\n", 0);
+                        Console.WriteLine("\n-- EnQueue Waiting thread:{0} --\n", t);
                         Monitor.Wait(_Lock);
                     }
                     EnQueue(i);
-                    //Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, 0);
+                    Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, t);
                     Thread.Sleep(5);
                     if (Count >= 1){ // if has something, wake up DeQueue Thread
                         Monitor.Pulse(_Lock);
@@ -53,16 +53,27 @@ namespace OS_Problem_02
             }
         }
 
-        // static void th011()
-        // {
-        //     int i;
-
-        //     for (i = 100; i < 151; i++)
-        //     {
-        //         EnQueue(i);
-        //         Thread.Sleep(5);
-        //     }
-        // }
+        static void th011(object t)
+        {
+            int i;
+            for (i = 100; i < 151; i++)
+            {
+                lock (_Lock)
+                {
+                    if (Count >= 10) // more than or equal to 10
+                    {
+                        Console.WriteLine("\n-- EnQueue Waiting thread:{0} --\n", t);
+                        Monitor.Wait(_Lock);
+                    }
+                    EnQueue(i);
+                    Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, t);
+                    Thread.Sleep(5);
+                    if (Count >= 1){ // if has something, wake up DeQueue Thread
+                        Monitor.Pulse(_Lock);
+                    }
+                }
+            }
+        }
 
 
         static void th02(object t)
@@ -96,16 +107,16 @@ namespace OS_Problem_02
         static void Main(string[] args)
         {
             Thread t1 = new Thread(th01);
-            //Thread t11 = new Thread(th011);
+            Thread t11 = new Thread(th011);
             Thread t2 = new Thread(th02);
-            //Thread t21 = new Thread(th02);
-            //Thread t22 = new Thread(th02);
+            Thread t21 = new Thread(th02);
+            Thread t22 = new Thread(th02);
 
-            t1.Start();
-            //t11.Start();
-            t2.Start(1);
-            //t21.Start(2);
-            //t22.Start(3);
+            t1.Start(1);
+            t11.Start(2);
+            t2.Start(3);
+            t21.Start(4);
+            t22.Start(5);
         }
     }
 }
