@@ -10,6 +10,8 @@ namespace OS_Problem_02
         static int Back = 0;
         static int Count = 0;
 
+        private static Object _Lock = new Object();
+
         static void EnQueue(int eq)
         {
             TSBuffer[Back] = eq;
@@ -31,25 +33,36 @@ namespace OS_Problem_02
         static void th01()
         {
             int i;
-
             for (i = 1; i < 51; i++)
             {
-                EnQueue(i);
-                // Console.WriteLine("i={0}, thread:{1}", i, 2);
-                Thread.Sleep(5);
+                lock (_Lock)
+                {
+                    if (Count >= 10) // more than or equal to 10
+                    {
+                        Console.WriteLine("\n-- EnQueue Waiting thread:{0} --\n", 0);
+                        Monitor.Wait(_Lock);
+                    }
+                    EnQueue(i);
+                    //Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, 0);
+                    Thread.Sleep(5);
+                    if (Count >= 1){ // if has something, wake up DeQueue Thread
+                        Monitor.Pulse(_Lock);
+                    }
+                }
+
             }
         }
 
-        static void th011()
-        {
-            int i;
+        // static void th011()
+        // {
+        //     int i;
 
-            for (i = 100; i < 151; i++)
-            {
-                EnQueue(i);
-                Thread.Sleep(5);
-            }
-        }
+        //     for (i = 100; i < 151; i++)
+        //     {
+        //         EnQueue(i);
+        //         Thread.Sleep(5);
+        //     }
+        // }
 
 
         static void th02(object t)
@@ -57,13 +70,29 @@ namespace OS_Problem_02
             int i;
             int j;
 
-            for (i=0; i< 60; i++)
+            for (i = 0; i < 60; i++)
             {
-                j = DeQueue();
-                Console.WriteLine("j={0}, thread:{1}", j, t);
-                Thread.Sleep(100);
+                lock (_Lock)
+                {
+                    if (Count <= 0) // equal or less than 0 
+                    {
+                        Console.WriteLine("\n-- Nothing to DeQueue thread:{0} --\n", t);
+                        Monitor.Wait(_Lock);
+                    }
+                    j = DeQueue();
+                    Console.WriteLine("## DeQueue j={0}, thread:{1} ##", j, t);
+                    Thread.Sleep(100);
+                    if(Count <= 9){ // if not Full, wake up EnQueue Thread
+                        Monitor.Pulse(_Lock);
+                    }
+                }
             }
         }
+
+        // EnQueue is **
+        // DeQueue is ##
+        // Waiting is --
+
         static void Main(string[] args)
         {
             Thread t1 = new Thread(th01);
