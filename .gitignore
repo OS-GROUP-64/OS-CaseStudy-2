@@ -1,0 +1,5 @@
+*.dat
+*.csproj
+bin/
+obj/
+.vscode
