@@ -33,9 +33,10 @@ namespace OS_Problem_02
         static void th01(object t)
         {
             int i;
-            lock (_Lock)
+
+            for (i = 1; i < 51; i++)
             {
-                for (i = 1; i < 51; i++)
+                lock (_Lock)
                 {
 
                     if (Count >= 10) // more than or equal to 10
@@ -44,7 +45,8 @@ namespace OS_Problem_02
                         Monitor.Wait(_Lock);
                     }
 
-                    if (Count < 10){
+                    if (Count < 10)
+                    {
                         EnQueue(i);
                         //Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, t);
                         Thread.Sleep(5);
@@ -53,18 +55,19 @@ namespace OS_Problem_02
                             Monitor.Pulse(_Lock);
                         }
                     }
-
-                    
                 }
+
             }
+
         }
 
         static void th011(object t)
         {
             int i;
-            lock (_Lock)
+
+            for (i = 100; i < 151; i++)
             {
-                for (i = 100; i < 151; i++)
+                lock (_Lock)
                 {
 
                     if (Count >= 10) // more than or equal to 10
@@ -72,8 +75,9 @@ namespace OS_Problem_02
                         Console.WriteLine("\n-- EnQueue Waiting thread:{0} --\n", t);
                         Monitor.Wait(_Lock);
                     }
-                    
-                    if (Count < 10){
+
+                    if (Count < 10)
+                    {
                         EnQueue(i);
                         //Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, t);
                         Thread.Sleep(5);
@@ -84,6 +88,7 @@ namespace OS_Problem_02
                     }
                 }
             }
+
         }
 
 
@@ -92,18 +97,19 @@ namespace OS_Problem_02
             int i;
             int j;
 
-            lock (_Lock)
-            {
-                for (i = 0; i < 60; i++)
-                {
 
+            for (i = 0; i < 60; i++)
+            {
+                lock (_Lock)
+                {
                     if (Count <= 0) // equal or less than 0 
                     {
                         Console.WriteLine("\n-- Nothing to DeQueue thread:{0} --\n", t);
                         Monitor.Wait(_Lock);
                     }
 
-                    if (Count > 0){
+                    if (Count > 0)
+                    {
                         j = DeQueue();
                         Console.WriteLine("## DeQueue j={0}, thread:{1} ##", j, t);
                         Thread.Sleep(100);
@@ -111,7 +117,6 @@ namespace OS_Problem_02
                         { // if not Full, wake up EnQueue Thread
                             Monitor.Pulse(_Lock);
                         }
-
                     }
                 }
             }
