@@ -37,5 +37,12 @@ Problem: (From V2.0)
 Solved: เพิ่มจำนวน Thread จาก 2 Threads เป็น 5 Threads (2 Threads EnQueue และ 3 Threads DeQueue)
 Result: ผลลัพท์ที่ได้ผิดพลาด มีการเข้าถึงข้อมูลที่ไม่ถูกต้อง และปริ้นลำดับผิดพลาด
 
+5. V2.2
+Edit Lock method
+
+6. V2.3 
+2 Lock
+Result: พัง 
+
 Reference:
 - [Creating a blocking Queue<T> in .NET?](https://stackoverflow.com/questions/530211/creating-a-blocking-queuet-in-net/530228#530228r)
