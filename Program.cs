@@ -33,12 +33,10 @@ namespace OS_Problem_02
         static void th01(object t)
         {
             int i;
-
             for (i = 1; i < 51; i++)
             {
                 lock (_Lock)
                 {
-
                     while (Count >= 10) // more than or equal to 10
                     {
                         Console.WriteLine("\n-- EnQueue Waiting thread:{0} --\n", t);
@@ -52,11 +50,8 @@ namespace OS_Problem_02
                     { // if has something, wake up DeQueue Thread
                         Monitor.Pulse(_Lock);
                     }
-
                 }
-
             }
-
         }
 
         static void th011(object t)
@@ -81,10 +76,8 @@ namespace OS_Problem_02
                     { // if has something, wake up DeQueue Thread
                         Monitor.Pulse(_Lock);
                     }
-
                 }
             }
-
         }
 
 
