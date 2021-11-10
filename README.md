@@ -37,5 +37,20 @@ Problem: (From V2.0)
 Solved: เพิ่มจำนวน Thread จาก 2 Threads เป็น 5 Threads (2 Threads EnQueue และ 3 Threads DeQueue)
 Result: ผลลัพท์ที่ได้ผิดพลาด มีการเข้าถึงข้อมูลที่ไม่ถูกต้อง และปริ้นลำดับผิดพลาด
 
+
+
+
+
+
+
+
+
+
+
+
+8. V2.5
+เสร็จแล้ว Lock สำเร็จ แต่เป็น lock นอก For loop
+
+
 Reference:
 - [Creating a blocking Queue<T> in .NET?](https://stackoverflow.com/questions/530211/creating-a-blocking-queuet-in-net/530228#530228r)

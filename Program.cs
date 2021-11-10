@@ -33,43 +33,54 @@ namespace OS_Problem_02
         static void th01(object t)
         {
             int i;
-            for (i = 1; i < 51; i++)
+            lock (_Lock)
             {
-                lock (_Lock)
+                for (i = 1; i < 51; i++)
                 {
+
                     if (Count >= 10) // more than or equal to 10
                     {
                         Console.WriteLine("\n-- EnQueue Waiting thread:{0} --\n", t);
                         Monitor.Wait(_Lock);
                     }
-                    EnQueue(i);
-                    Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, t);
-                    Thread.Sleep(5);
-                    if (Count >= 1){ // if has something, wake up DeQueue Thread
-                        Monitor.Pulse(_Lock);
-                    }
-                }
 
+                    if (Count < 10){
+                        EnQueue(i);
+                        //Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, t);
+                        Thread.Sleep(5);
+                        if (Count >= 1)
+                        { // if has something, wake up DeQueue Thread
+                            Monitor.Pulse(_Lock);
+                        }
+                    }
+
+                    
+                }
             }
         }
 
         static void th011(object t)
         {
             int i;
-            for (i = 100; i < 151; i++)
+            lock (_Lock)
             {
-                lock (_Lock)
+                for (i = 100; i < 151; i++)
                 {
+
                     if (Count >= 10) // more than or equal to 10
                     {
                         Console.WriteLine("\n-- EnQueue Waiting thread:{0} --\n", t);
                         Monitor.Wait(_Lock);
                     }
-                    EnQueue(i);
-                    Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, t);
-                    Thread.Sleep(5);
-                    if (Count >= 1){ // if has something, wake up DeQueue Thread
-                        Monitor.Pulse(_Lock);
+                    
+                    if (Count < 10){
+                        EnQueue(i);
+                        //Console.WriteLine("** EnQueue i={0}, thread:{1} **", i, t);
+                        Thread.Sleep(5);
+                        if (Count >= 1)
+                        { // if has something, wake up DeQueue Thread
+                            Monitor.Pulse(_Lock);
+                        }
                     }
                 }
             }
@@ -81,20 +92,26 @@ namespace OS_Problem_02
             int i;
             int j;
 
-            for (i = 0; i < 60; i++)
+            lock (_Lock)
             {
-                lock (_Lock)
+                for (i = 0; i < 60; i++)
                 {
+
                     if (Count <= 0) // equal or less than 0 
                     {
                         Console.WriteLine("\n-- Nothing to DeQueue thread:{0} --\n", t);
                         Monitor.Wait(_Lock);
                     }
-                    j = DeQueue();
-                    Console.WriteLine("## DeQueue j={0}, thread:{1} ##", j, t);
-                    Thread.Sleep(100);
-                    if(Count <= 9){ // if not Full, wake up EnQueue Thread
-                        Monitor.Pulse(_Lock);
+
+                    if (Count > 0){
+                        j = DeQueue();
+                        Console.WriteLine("## DeQueue j={0}, thread:{1} ##", j, t);
+                        Thread.Sleep(100);
+                        if (Count <= 9)
+                        { // if not Full, wake up EnQueue Thread
+                            Monitor.Pulse(_Lock);
+                        }
+
                     }
                 }
             }
